@@ -58,6 +58,8 @@ class RPSEngine {
       result: moveToInputs[playerMove]
     });
 
+    this.dnn.update(moveToInputs[playerMove]);
+
     this.recentMoves = [{ playerMove, aiMove }].concat(this.recentMoves);
 
     if (this.recentMoves.length > 7) {
