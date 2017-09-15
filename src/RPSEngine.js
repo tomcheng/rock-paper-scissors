@@ -1,6 +1,13 @@
 import sample from "lodash/sample";
+import flatMap from "lodash/flatMap";
+import deepNeuralNetwork from "./deepNeuralNetwork";
 
 const moves = ["rock", "paper", "scissors"];
+const moveToInputs = {
+  rock: [1, 0, 0],
+  paper: [0, 1, 0],
+  scissors: [0, 0, 1]
+};
 
 class RPSEngine {
   constructor({ onPlay }) {
@@ -10,9 +17,19 @@ class RPSEngine {
       lose: 0,
       draw: 0
     };
+    this.recentMoves = [];
+    this.dnn = new deepNeuralNetwork({ nodeCount: [42, 22, 3] });
   }
 
   play = playerMove => {
+    console.log("this.recentMoves:", this.recentMoves);
+    const inputs = flatMap(this.recentMoves, ({ playerMove: p, aiMove: a }) => [
+      ...moveToInputs[p],
+      ...moveToInputs[a]
+    ]);
+    const guess = this.dnn.guess(inputs);
+    console.log("guess:", guess);
+
     const aiMove = sample(moves);
     let result = "";
 
@@ -28,9 +45,29 @@ class RPSEngine {
       result = "lose";
     }
 
+    this.updateTraining({ playerMove, aiMove, previousInputs: inputs });
+
     this.updateTally(result);
 
     this.onPlay({ playerMove, aiMove, result });
+  };
+
+  updateTraining = ({ playerMove, aiMove, previousInputs }) => {
+    this.addSet({
+      inputs: previousInputs,
+      result: moveToInputs[playerMove]
+    });
+
+    this.recentMoves = [{ playerMove, aiMove }].concat(this.recentMoves);
+
+    if (this.recentMoves.length > 7) {
+      this.recentMoves.pop();
+    }
+  };
+
+  addSet = ({ inputs, result }) => {
+    console.log("inputs:", inputs);
+    console.log("result:", result);
   };
 
   updateTally = result => {
