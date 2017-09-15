@@ -33,8 +33,9 @@ class deepNeuralNetwork {
     for (let i = 0; i < this.weights.length; i++) {
       const W = this.weights[i];
       const inputCol = i === 0 ? filledInput : this.as[i - 1];
-      const z = matrixMultiply(W, inputCol);
+      const z = matrixMultiply(W, inputCol).map((v, j) => v + this.biases[i][j]);
       const a = z.map(sigmoid);
+      console.log("z:", z);
       console.log("a:", a);
       this.zs.push(z);
       this.as.push(a);
@@ -64,6 +65,10 @@ class deepNeuralNetwork {
         matrixMultiply(Wt, nextLayerErrors),
         z.map(sigmoidPrime)
       );
+    }
+
+    for (let i = 0; i < this.biases.length; i++) {
+      this.biases[i] = this.biases[i].map((b, j) => b - this.errors[i][j])
     }
 
     console.log("this.errors:", this.errors);
