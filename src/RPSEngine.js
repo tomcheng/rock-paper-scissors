@@ -4,7 +4,12 @@ const moves = ["rock", "paper", "scissors"];
 
 class RPSEngine {
   constructor({ onPlay }) {
-    this._onPlay = onPlay;
+    this.onPlay = onPlay;
+    this.tally = {
+      win: 0,
+      lose: 0,
+      draw: 0
+    };
   }
 
   play = playerMove => {
@@ -23,7 +28,29 @@ class RPSEngine {
       result = "lose";
     }
 
-    this._onPlay({ playerMove, aiMove, result });
+    this.updateTally(result);
+
+    this.onPlay({ playerMove, aiMove, result });
+  };
+
+  updateTally = result => {
+    this.tally = {
+      ...this.tally,
+      [result]: this.tally[result] + 1
+    };
+
+    const total = this.tally.win + this.tally.lose + this.tally.draw;
+
+    console.log(
+      "win:",
+      Math.round(this.tally.win / total * 100) + "%",
+      "lose:",
+      Math.round(this.tally.lose / total * 100) + "%",
+      "draw:",
+      Math.round(this.tally.draw / total * 100) + "%",
+      "total:",
+      total
+    );
   };
 }
 

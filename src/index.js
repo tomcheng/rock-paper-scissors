@@ -2,14 +2,19 @@ import "./index.css";
 import registerServiceWorker from "./registerServiceWorker";
 import RPSEngine from "./RPSEngine";
 
+const RESULT_COLORS = {
+  win: "green",
+  lose: "red",
+  draw: "lightgrey"
+};
+
 const rockButton = document.getElementById("rock");
 const paperButton = document.getElementById("paper");
 const scissorsButton = document.getElementById("scissors");
+
 const engine = new RPSEngine({
-  onPlay: ({ playerMove, aiMove, result }) => {
-    console.log("playerMove:", playerMove);
-    console.log("aiMove:", aiMove);
-    console.log("result:", result);
+  onPlay: ({ result }) => {
+    console.log("%c " + result, "color: " + RESULT_COLORS[result]);
   }
 });
 
