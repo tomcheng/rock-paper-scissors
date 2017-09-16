@@ -2,8 +2,6 @@ import times from "lodash/times";
 import constant from "lodash/constant";
 import last from "lodash/last";
 
-const LEARNING_RATE = 0.1;
-
 const sigmoid = x => 1 / (1 + Math.pow(Math.E, -x));
 const sigmoidPrime = x => Math.exp(-x) / Math.pow(1 + Math.exp(-x), 2);
 const transpose = m => m[0].map((col, i) => m.map(r => r[i]));
@@ -12,14 +10,15 @@ const matrixMultiply = (m, c) =>
 const elementWiseMultiply = (c1, c2) => c1.map((v, i) => v * c2[i]);
 
 class deepNeuralNetwork {
-  constructor({ nodeCount }) {
-    this.numInputNodes = nodeCount[0];
-    this.numLayers = nodeCount.length;
+  constructor({ nodeCounts, learningRate }) {
+    this.learningRate = learningRate || 1;
+    this.numInputNodes = nodeCounts[0];
+    this.numLayers = nodeCounts.length;
     this.weights = [null];
     this.biases = [null];
-    for (let i = 1; i < nodeCount.length; i++) {
-      const rows = nodeCount[i];
-      const cols = nodeCount[i - 1];
+    for (let i = 1; i < nodeCounts.length; i++) {
+      const rows = nodeCounts[i];
+      const cols = nodeCounts[i - 1];
       this.weights[i] = times(rows, constant(times(cols, constant(0))));
       this.biases[i] = times(rows, constant(0));
     }
@@ -65,11 +64,11 @@ class deepNeuralNetwork {
 
     for (let l = 1; l < this.numLayers; l++) {
       this.biases[l] = this.biases[l].map(
-        (b, j) => b - LEARNING_RATE * this.errors[l][j]
+        (b, j) => b - this.learningRate * this.errors[l][j]
       );
       for (let j = 0; j < this.weights[l].length; j++) {
         this.weights[l][j] = this.weights[l][j].map(
-          (w, k) => w - LEARNING_RATE * this.as[l - 1][k] * this.errors[l][j]
+          (w, k) => w - this.learningRate * this.as[l - 1][k] * this.errors[l][j]
         );
       }
     }

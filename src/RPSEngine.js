@@ -18,11 +18,10 @@ class RPSEngine {
       draw: 0
     };
     this.recentMoves = [];
-    this.dnn = new deepNeuralNetwork({ nodeCount: [42, 22, 3] });
+    this.dnn = new deepNeuralNetwork({ nodeCounts: [42, 3], learningRate: 1 });
   }
 
   play = playerMove => {
-    console.log("this.recentMoves:", this.recentMoves);
     const inputs = flatMap(this.recentMoves, ({ playerMove: p, aiMove: a }) => [
       ...moveToInputs[p],
       ...moveToInputs[a]
