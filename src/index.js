@@ -18,6 +18,22 @@ const engine = new RPSEngine({
   }
 });
 
+window.addEventListener("keydown", evt => {
+  switch (evt.keyCode) {
+    case 49:
+      engine.play("rock");
+      break;
+    case 50:
+      engine.play("paper");
+      break;
+    case 51:
+      engine.play("scissors");
+      break;
+    default:
+      break;
+  }
+});
+
 rockButton.addEventListener("click", () => {
   engine.play("rock");
 });

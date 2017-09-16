@@ -45,19 +45,14 @@ class RPSEngine {
       result = "lose";
     }
 
-    this.updateTraining({ playerMove, aiMove, previousInputs: inputs });
+    this.updateTraining({ playerMove, aiMove });
 
     this.updateTally(result);
 
     this.onPlay({ playerMove, aiMove, result });
   };
 
-  updateTraining = ({ playerMove, aiMove, previousInputs }) => {
-    this.addSet({
-      inputs: previousInputs,
-      result: moveToInputs[playerMove]
-    });
-
+  updateTraining = ({ playerMove, aiMove }) => {
     this.dnn.update(moveToInputs[playerMove]);
 
     this.recentMoves = [{ playerMove, aiMove }].concat(this.recentMoves);
@@ -65,11 +60,6 @@ class RPSEngine {
     if (this.recentMoves.length > 7) {
       this.recentMoves.pop();
     }
-  };
-
-  addSet = ({ inputs, result }) => {
-    console.log("inputs:", inputs);
-    console.log("result:", result);
   };
 
   updateTally = result => {
