@@ -11,11 +11,6 @@ const moveToInputs = {
 
 class RPSEngine {
   constructor() {
-    this.tally = {
-      win: 0,
-      lose: 0,
-      draw: 0
-    };
     this.recentMoves = [];
     this.dnn = new deepNeuralNetwork({ nodeCounts: [42, 3], learningRate: 1 });
   }
@@ -45,8 +40,6 @@ class RPSEngine {
 
     this.updateTraining({ playerMove, aiMove });
 
-    // this.updateTally(result);
-
     return { playerMove, aiMove, result };
   };
 
@@ -58,26 +51,6 @@ class RPSEngine {
     if (this.recentMoves.length > 7) {
       this.recentMoves.pop();
     }
-  };
-
-  updateTally = result => {
-    this.tally = {
-      ...this.tally,
-      [result]: this.tally[result] + 1
-    };
-
-    const total = this.tally.win + this.tally.lose + this.tally.draw;
-
-    console.log(
-      "win:",
-      Math.round(this.tally.win / total * 100) + "%",
-      "lose:",
-      Math.round(this.tally.lose / total * 100) + "%",
-      "draw:",
-      Math.round(this.tally.draw / total * 100) + "%",
-      "total:",
-      total
-    );
   };
 }
 

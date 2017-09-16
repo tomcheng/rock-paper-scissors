@@ -1,6 +1,8 @@
 import "./index.css";
 import registerServiceWorker from "./registerServiceWorker";
 import RPSEngine from "./RPSEngine";
+import { alwaysRock } from "./strategies";
+import tracker from "./tracker";
 
 const RESULT_COLORS = {
   win: "green",
@@ -44,5 +46,9 @@ paperButton.addEventListener("click", () => {
 scissorsButton.addEventListener("click", () => {
   log(engine.play("scissors"));
 });
+
+window.setInterval(() => {
+  tracker(engine.play(alwaysRock()));
+}, 1000);
 
 registerServiceWorker();

@@ -22,8 +22,6 @@ class deepNeuralNetwork {
       this.weights[i] = times(rows, constant(times(cols, constant(0))));
       this.biases[i] = times(rows, constant(0));
     }
-    console.log("this.weights:", this.weights);
-    console.log("this.biases:", this.biases);
   }
 
   guess = rawInput => {
@@ -72,8 +70,6 @@ class deepNeuralNetwork {
         );
       }
     }
-    console.log("this.biases:", this.biases);
-    console.log("this.weights:", this.weights);
   };
 }
 
