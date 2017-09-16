@@ -10,8 +10,7 @@ const moveToInputs = {
 };
 
 class RPSEngine {
-  constructor({ onPlay }) {
-    this.onPlay = onPlay;
+  constructor() {
     this.tally = {
       win: 0,
       lose: 0,
@@ -46,9 +45,9 @@ class RPSEngine {
 
     this.updateTraining({ playerMove, aiMove });
 
-    this.updateTally(result);
+    // this.updateTally(result);
 
-    this.onPlay({ playerMove, aiMove, result });
+    return { playerMove, aiMove, result };
   };
 
   updateTraining = ({ playerMove, aiMove }) => {

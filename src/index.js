@@ -7,27 +7,26 @@ const RESULT_COLORS = {
   lose: "red",
   draw: "lightgrey"
 };
+const log = ({ result }) => {
+  console.log("%c " + result, "color: " + RESULT_COLORS[result]);
+};
 
 const rockButton = document.getElementById("rock");
 const paperButton = document.getElementById("paper");
 const scissorsButton = document.getElementById("scissors");
 
-const engine = new RPSEngine({
-  onPlay: ({ result }) => {
-    console.log("%c " + result, "color: " + RESULT_COLORS[result]);
-  }
-});
+const engine = new RPSEngine();
 
 window.addEventListener("keydown", evt => {
   switch (evt.keyCode) {
     case 49:
-      engine.play("rock");
+      log(engine.play("rock"));
       break;
     case 50:
-      engine.play("paper");
+      log(engine.play("paper"));
       break;
     case 51:
-      engine.play("scissors");
+      log(engine.play("scissors"));
       break;
     default:
       break;
@@ -35,15 +34,15 @@ window.addEventListener("keydown", evt => {
 });
 
 rockButton.addEventListener("click", () => {
-  engine.play("rock");
+  log(engine.play("rock"));
 });
 
 paperButton.addEventListener("click", () => {
-  engine.play("paper");
+  log(engine.play("paper"));
 });
 
 scissorsButton.addEventListener("click", () => {
-  engine.play("scissors");
+  log(engine.play("scissors"));
 });
 
 registerServiceWorker();
