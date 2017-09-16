@@ -12,33 +12,34 @@ const elementWiseMultiply = (c1, c2) => c1.map((v, i) => v * c2[i]);
 class deepNeuralNetwork {
   constructor({ nodeCount }) {
     this.numInputNodes = nodeCount[0];
-    this.weights = [];
-    this.biases = [];
+    this.numLayers = nodeCount.length;
+    this.weights = [null];
+    this.biases = [null];
     for (let i = 1; i < nodeCount.length; i++) {
       const rows = nodeCount[i];
       const cols = nodeCount[i - 1];
-      this.weights.push(times(rows, constant(times(cols, constant(0)))));
-      this.biases.push(times(rows, constant(0)));
+      this.weights[i] = times(rows, constant(times(cols, constant(0))));
+      this.biases[i] = times(rows, constant(0));
     }
     console.log("this.weights:", this.weights);
     console.log("this.biases:", this.biases);
   }
 
-  guess = input => {
-    const filledInput = input.concat(
-      times(this.numInputNodes - input.length, constant(0))
+  guess = rawInput => {
+    const input = rawInput.concat(
+      times(this.numInputNodes - rawInput.length, constant(0))
     );
-    this.zs = [];
-    this.as = [];
-    for (let i = 0; i < this.weights.length; i++) {
+    this.zs = [null];
+    this.as = [input];
+    for (let i = 1; i < this.numLayers; i++) {
       const W = this.weights[i];
-      const inputCol = i === 0 ? filledInput : this.as[i - 1];
+      const inputCol = this.as[i - 1];
       const z = matrixMultiply(W, inputCol).map((v, j) => v + this.biases[i][j]);
       const a = z.map(sigmoid);
       console.log("z:", z);
       console.log("a:", a);
-      this.zs.push(z);
-      this.as.push(a);
+      this.zs[i] = z;
+      this.as[i] = a;
     }
 
     return last(this.as);
@@ -53,21 +54,21 @@ class deepNeuralNetwork {
     const outputErrors = output.map(
       (g, i) => (g - result[i]) * sigmoidPrime(outputZ[i])
     );
-    this.errors = [];
-    this.errors[this.weights.length - 1] = outputErrors;
+    this.errors = [null];
+    this.errors[this.numLayers - 1] = outputErrors;
 
-    for (let i = this.weights.length - 1; i > 0; i--) {
-      const nextLayerErrors = last(this.errors);
-      const Wt = transpose(this.weights[i]);
-      const z = this.zs[i - 1];
+    for (let i = this.numLayers - 2; i > 0; i--) {
+      const nextLayerErrors = this.errors[i + 1];
+      const Wt = transpose(this.weights[i + 1]);
+      const z = this.zs[i];
 
-      this.errors[i - 1] = elementWiseMultiply(
+      this.errors[i] = elementWiseMultiply(
         matrixMultiply(Wt, nextLayerErrors),
         z.map(sigmoidPrime)
       );
     }
 
-    for (let i = 0; i < this.biases.length; i++) {
+    for (let i = 1; i < this.numLayers; i++) {
       this.biases[i] = this.biases[i].map((b, j) => b - this.errors[i][j])
     }
 
