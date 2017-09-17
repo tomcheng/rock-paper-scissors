@@ -1,6 +1,6 @@
 import RPSEngine from "./RPSEngine";
 import * as strategies from "./strategies";
-import { track, resetTracker } from "./tracker";
+import { track, resetTracker, outputTracker } from "./tracker";
 
 describe("RPS Engine", () => {
   it("Should do something", () => {
@@ -20,9 +20,10 @@ describe("RPS Engine", () => {
       let lastResult;
 
       for (let i = 0; i < 1000; i++) {
-        lastResult = track(engine.play(strategies.alternateStrategies(lastResult)), { suppress: i !== 999 });
+        lastResult = track(engine.play(strategies.alternateStrategies(lastResult)));
       }
 
+      outputTracker();
       resetTracker();
     });
   })
