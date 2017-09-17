@@ -1,56 +1,67 @@
-import sample from "lodash/sample";
 import flatMap from "lodash/flatMap";
 import deepNeuralNetwork from "./deepNeuralNetwork";
 
-const moves = ["rock", "paper", "scissors"];
+const MEMORY = 7;
+
 const moveToInputs = {
   rock: [1, 0, 0],
   paper: [0, 1, 0],
   scissors: [0, 0, 1]
 };
+const resultToInputs = {
+  win: [1, 0, 0],
+  lose: [0, 1, 0],
+  draw: [0, 0, 1]
+};
+const getResult = (p, a) => {
+  if (p === a) {
+    return "draw";
+  }
+  if (
+    (p === "rock" && a === "scissors") ||
+    (p === "scissors" && a === "paper") ||
+    (p === "paper" && a === "rock")
+  ) {
+    return "win";
+  }
+  return "lose";
+};
+const outputToGuess = output => {
+  if (output[1] > Math.max(output[0], output[2])) {
+    return "scissors";
+  }
+  if (output[2] > Math.max(output[0], output[1])) {
+    return "rock";
+  }
+  return "paper";
+};
 
 class RPSEngine {
   constructor() {
     this.recentMoves = [];
-    this.dnn = new deepNeuralNetwork({ nodeCounts: [42, 3], learningRate: 1 });
+    this.dnn = new deepNeuralNetwork({
+      nodeCounts: [MEMORY * 9, 33, 3],
+      learningRate: 1
+    });
   }
 
   play = playerMove => {
-    const inputs = flatMap(this.recentMoves, ({ playerMove: p, aiMove: a }) => [
+    const inputs = flatMap(this.recentMoves, ({ playerMove: p, aiMove: a, result: r }) => [
       ...moveToInputs[p],
-      ...moveToInputs[a]
+      ...moveToInputs[a],
+      ...resultToInputs[r]
     ]);
-    const guess = this.dnn.guess(inputs);
-    console.log("guess:", guess);
+    const aiMove = outputToGuess(this.dnn.guess(inputs));
+    const result = getResult(playerMove, aiMove);
 
-    const aiMove = sample(moves);
-    let result = "";
-
-    if (playerMove === aiMove) {
-      result = "draw";
-    } else if (
-      (playerMove === "rock" && aiMove === "scissors") ||
-      (playerMove === "scissors" && aiMove === "paper") ||
-      (playerMove === "paper" && aiMove === "rock")
-    ) {
-      result = "win";
-    } else {
-      result = "lose";
-    }
-
-    this.updateTraining({ playerMove, aiMove });
-
-    return { playerMove, aiMove, result };
-  };
-
-  updateTraining = ({ playerMove, aiMove }) => {
     this.dnn.update(moveToInputs[playerMove]);
 
-    this.recentMoves = [{ playerMove, aiMove }].concat(this.recentMoves);
-
-    if (this.recentMoves.length > 7) {
+    this.recentMoves = [{ playerMove, aiMove, result }].concat(this.recentMoves);
+    if (this.recentMoves.length > MEMORY) {
       this.recentMoves.pop();
     }
+
+    return { playerMove, aiMove, result };
   };
 }
 
