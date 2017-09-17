@@ -37,11 +37,12 @@ const outputToGuess = output => {
 };
 
 class RPSEngine {
-  constructor() {
+  constructor(params = { numLayers: 3, learningRate: 1 }) {
+    const { numLayers, learningRate } = params;
     this.recentMoves = [];
     this.dnn = new deepNeuralNetwork({
-      nodeCounts: [MEMORY * 9, 33, 3],
-      learningRate: 1
+      nodeCounts: numLayers === 2 ? [MEMORY * 9, 3] : [MEMORY * 9, 33, 3],
+      learningRate
     });
   }
 

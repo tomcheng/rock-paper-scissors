@@ -1,10 +1,11 @@
-let tally = {
+const defaultTally = {
   win: 0,
   lose: 0,
   draw: 0
 };
+let tally = defaultTally;
 
-const tracker = (params, opts) => {
+export const track = (params, opts) => {
   const { result } = params;
   tally = {
     ...tally,
@@ -28,6 +29,6 @@ const tracker = (params, opts) => {
   return params;
 };
 
-
-
-export default tracker;
+export const resetTracker = () => {
+  tally = defaultTally;
+};

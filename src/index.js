@@ -1,8 +1,6 @@
 import "./index.css";
 import registerServiceWorker from "./registerServiceWorker";
 import RPSEngine from "./RPSEngine";
-import * as strategies from "./strategies";
-import tracker from "./tracker";
 
 const RESULT_COLORS = {
   win: "green",
@@ -46,15 +44,5 @@ paperButton.addEventListener("click", () => {
 scissorsButton.addEventListener("click", () => {
   log(engine.play("scissors"));
 });
-
-let lastResult;
-
-for (let i = 0; i < 10000; i++) {
-  lastResult = tracker(engine.play(strategies.alternateStrategies(lastResult)), { suppress: i !== 99 });
-}
-
-for (let i = 0; i < 100; i++) {
-  log(engine.play(i % 2 === 0 ? "rock" : "paper"));
-}
 
 registerServiceWorker();
