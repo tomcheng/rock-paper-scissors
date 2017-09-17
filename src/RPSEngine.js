@@ -27,21 +27,24 @@ const getResult = (p, a) => {
   return "lose";
 };
 const outputToGuess = output => {
-  if (output[1] > Math.max(output[0], output[2])) {
-    return "scissors";
-  }
-  if (output[2] > Math.max(output[0], output[1])) {
+  const expectedValueForRock = 2 * output[2] - output[1];
+  const expectedValueForPaper = 2 * output[0] - output[2];
+  const expectedValueForScissors = 2 * output[1] - output[0];
+  if (expectedValueForRock > Math.max(expectedValueForPaper, expectedValueForScissors)) {
     return "rock";
   }
-  return "paper";
+  if (expectedValueForPaper > Math.max(expectedValueForRock, expectedValueForScissors)) {
+    return "paper";
+  }
+  return "scissors";
 };
 
 class RPSEngine {
-  constructor(params = { numLayers: 3, learningRate: 1 }) {
-    const { numLayers, learningRate } = params;
+  constructor(params = { hiddenLayers: [33], learningRate: 1 }) {
+    const { hiddenLayers, learningRate } = params;
     this.recentMoves = [];
     this.dnn = new deepNeuralNetwork({
-      nodeCounts: numLayers === 2 ? [MEMORY * 9, 3] : [MEMORY * 9, 33, 3],
+      nodeCounts: [].concat([MEMORY * 9], hiddenLayers, [3]),
       learningRate
     });
   }
