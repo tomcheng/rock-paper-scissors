@@ -27,10 +27,40 @@ export const sameUntilLose = lastResult => {
     reject(["rock", "paper", "scissors"], p => p === lastResult.playerMove)
   );
 };
+export const rockAndPaper = lastResult => {
+  if (!lastResult || lastResult !== "paper") return "paper";
+  return "rock";
+};
+export const paperAndScissors = lastResult => {
+  if (!lastResult || lastResult !== "paper") return "paper";
+  return "rock";
+};
+export const scissorsAndRock = lastResult => {
+  if (!lastResult || lastResult !== "paper") return "paper";
+  return "rock";
+};
+export const random = () => sample(["rock", "paper", "scissors"])
+
 export const alternateStrategies = lastResult => {
-  const strategies = [sameUntilLose, alwaysPaper, alternate, alwaysScissors, otherWay, alwaysRock];
+  const strategies = [
+    sameUntilLose,
+    alwaysPaper,
+    alternate,
+    alwaysScissors,
+    otherWay,
+    alwaysRock,
+    rockAndPaper,
+    paperAndScissors,
+    scissorsAndRock,
+    random
+  ];
   const numMoves = 5;
-  const strategy = strategies[Math.floor((altStrategyCounter % (strategies.length * numMoves)) / numMoves)];
+  const strategy =
+    strategies[
+      Math.floor(
+        (altStrategyCounter % (strategies.length * numMoves)) / numMoves
+      )
+    ];
   altStrategyCounter++;
   return strategy(lastResult);
 };

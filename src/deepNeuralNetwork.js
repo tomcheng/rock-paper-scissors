@@ -1,6 +1,7 @@
 import times from "lodash/times";
 import constant from "lodash/constant";
 import last from "lodash/last";
+import random from "lodash/random";
 
 const sigmoid = x => 1 / (1 + Math.pow(Math.E, -x));
 const sigmoidPrime = x => Math.exp(-x) / Math.pow(1 + Math.exp(-x), 2);
@@ -19,8 +20,8 @@ class deepNeuralNetwork {
     for (let i = 1; i < nodeCounts.length; i++) {
       const rows = nodeCounts[i];
       const cols = nodeCounts[i - 1];
-      this.weights[i] = times(rows, constant(times(cols, constant(0))));
-      this.biases[i] = times(rows, constant(0));
+      this.weights[i] = times(rows, () => times(cols, () => random(-0.1, 0.1)));
+      this.biases[i] = times(rows, () => random(-0.1, 0.1));
     }
   }
 
