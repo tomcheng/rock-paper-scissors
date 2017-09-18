@@ -7,15 +7,39 @@
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json">
     <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
     <title>Rock Paper Scissors</title>
+    <style>
+      .container {
+        display: none;
+      }
+    </style>
   </head>
   <body>
     <noscript>
       You need to enable JavaScript to run this app.
     </noscript>
-    <div>
-      <button id="rock">Rock</button>
-      <button id="paper">Paper</button>
-      <button id="scissors">Scissors</button>
+    <div class="container">
+      <div id="ai-move" class="ai">
+        <i class="ai-icon ai-icon--rock fa fa-hand-rock-o"></i>
+        <i class="ai-icon ai-icon--paper fa fa-hand-paper-o"></i>
+        <i class="ai-icon ai-icon--scissors fa fa-hand-scissors-o"></i>
+        <div class="ai-result ai-result--win">You win</div>
+        <div class="ai-result ai-result--lose">You lose</div>
+        <div class="ai-result ai-result--draw">It's a draw</div>
+      </div>
+      <div id="buttons" class="buttons">
+        <div class="button" id="rock">
+          <i class="button-icon fa fa-hand-rock-o"></i>
+          <div class="text">Rock</div>
+        </div>
+        <div class="button" id="paper">
+          <i class="button-icon fa fa-hand-paper-o"></i>
+          <div class="text">Paper</div>
+        </div>
+        <div class="button" id="scissors">
+          <i class="button-icon fa fa-hand-scissors-o"></i>
+          <div class="text">Scissors</div>
+        </div>
+      </div>
     </div>
   </body>
 </html>

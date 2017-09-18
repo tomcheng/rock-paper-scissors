@@ -1,5 +1,67 @@
-body {
+html, body, .container {
   margin: 0;
   padding: 0;
   font-family: sans-serif;
+  height: 100%;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.ai {
+  flex-grow: 1;
+  flex-basis: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.ai-icon {
+  display: none;
+  font-size: 120px;
+  margin-bottom: 16px;
+}
+
+.ai[data-move="rock"] .ai-icon--rock,
+.ai[data-move="paper"] .ai-icon--paper,
+.ai[data-move="scissors"] .ai-icon--scissors {
+  display: block;
+}
+
+.ai-result {
+  display: none;
+}
+
+.ai[data-result="win"] .ai-result--win,
+.ai[data-result="lose"] .ai-result--lose,
+.ai[data-result="draw"] .ai-result--draw {
+  display: block;
+}
+
+.buttons {
+  height: 100px;
+  display: flex;
+  padding: 0 20px 20px;
+}
+
+.button {
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: #f2f2f2;
+  margin: 0 10px;
+  flex-grow: 1;
+  flex-shrink: 0;
+  flex-basis: 80px;
+  text-align: center;
+}
+
+.button-icon {
+  font-size: 40px;
+  margin-bottom: 8px;
 }
