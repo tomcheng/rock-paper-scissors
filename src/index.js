@@ -20,7 +20,6 @@ const update = ({ result, playerMove, aiMove }) => {
   console.log("%c " + result, "color: " + RESULT_COLORS[result]);
 };
 
-
 const engine = new RPSEngine();
 
 const play = move => {
@@ -43,8 +42,14 @@ window.addEventListener("keydown", evt => {
   }
 });
 
-rockButton.addEventListener("click", () => { play("rock"); });
-paperButton.addEventListener("click", () => { play("paper"); });
-scissorsButton.addEventListener("click", () => { play("scissors"); });
+rockButton.addEventListener("click", () => {
+  play("rock");
+});
+paperButton.addEventListener("click", () => {
+  play("paper");
+});
+scissorsButton.addEventListener("click", () => {
+  play("scissors");
+});
 
 registerServiceWorker();
