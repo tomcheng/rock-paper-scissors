@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import styled from "styled-components";
+import upperFirst from "lodash/upperFirst";
 import Button from "./Button";
 import RPSEngine from "../RPSEngine";
 
@@ -56,30 +57,23 @@ class App extends Component {
   };
 
   render() {
-    const { result, aiMove } = this.state;
+    const { result, aiMove, playerMove } = this.state;
     return (
       <StyledAppContainer>
         <StyledResult>
           {aiMove && <StyledAiIcon className={"fa fa-" + ICONS[aiMove]} />}
           <div style={{ color: RESULT_COLORS[result] }}>{result}</div>
         </StyledResult>
-
         <StyledButtons>
-          <Button
-            icon="hand-rock-o"
-            label="Rock"
-            onClick={() => this.handleClick("rock")}
-          />
-          <Button
-            icon="hand-paper-o"
-            label="Paper"
-            onClick={() => this.handleClick("paper")}
-          />
-          <Button
-            icon="hand-scissors-o"
-            label="Scissors"
-            onClick={() => this.handleClick("scissors")}
-          />
+          {["rock", "paper", "scissors"].map(move => (
+            <Button
+              key={move}
+              icon={ICONS[move]}
+              label={upperFirst(move)}
+              onClick={() => this.handleClick(move)}
+              active={playerMove === move}
+            />
+          ))}
         </StyledButtons>
       </StyledAppContainer>
     );
