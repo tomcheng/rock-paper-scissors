@@ -1,7 +1,7 @@
 import flatMap from "lodash/flatMap";
 import deepNeuralNetwork from "./deepNeuralNetwork";
 
-const MEMORY = 7;
+const MEMORY = 5;
 
 const moveToInputs = {
   rock: [1, 0, 0],
@@ -54,7 +54,7 @@ const outputToGuess = output => {
 };
 
 class RPSEngine {
-  constructor(params = { hiddenLayers: [54], learningRate: 1 }) {
+  constructor(params = { hiddenLayers: [], learningRate: 1 }) {
     const { hiddenLayers, learningRate } = params;
     this.recentMoves = [];
     this.dnn = new deepNeuralNetwork({

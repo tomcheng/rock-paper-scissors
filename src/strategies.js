@@ -39,8 +39,9 @@ export const scissorsAndRock = lastResult => {
   if (!lastResult || lastResult !== "paper") return "paper";
   return "rock";
 };
-export const random = () => sample(["rock", "paper", "scissors"])
+export const random = () => sample(["rock", "paper", "scissors"]);
 
+let strategy = sameUntilLose;
 export const alternateStrategies = lastResult => {
   const strategies = [
     sameUntilLose,
@@ -54,13 +55,10 @@ export const alternateStrategies = lastResult => {
     scissorsAndRock,
     random
   ];
-  const numMoves = 5;
-  const strategy =
-    strategies[
-      Math.floor(
-        (altStrategyCounter % (strategies.length * numMoves)) / numMoves
-      )
-    ];
+  if (altStrategyCounter === 5) {
+    altStrategyCounter = 0;
+    strategy = sample(strategies);
+  }
   altStrategyCounter++;
   return strategy(lastResult);
 };

@@ -5,7 +5,7 @@ import { track, resetTracker, outputTracker } from "./tracker";
 describe("RPS Engine", () => {
   it("Should do something", () => {
     const configs = [
-      { hiddenLayers: [33], learningRate: 1 },
+      { hiddenLayers: [], learningRate: 1 },
     ];
 
     configs.forEach(config => {
@@ -14,14 +14,10 @@ describe("RPS Engine", () => {
 
       let lastResult;
 
-      for (let i = 0; i < 1000; i++) {
-        lastResult = track(engine.play(strategies.sameUntilLose(lastResult)));
+      for (let i = 0; i < 10000; i++) {
+        lastResult = track(engine.play(strategies.alternateStrategies(lastResult)));
       }
-      outputTracker();
-      resetTracker();
-      for (let i = 0; i < 100; i++) {
-        lastResult = track(engine.play(strategies.rockAndPaper(lastResult)));
-      }
+
       outputTracker();
       resetTracker();
     });
