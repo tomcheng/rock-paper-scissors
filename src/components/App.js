@@ -1,18 +1,21 @@
 import React, { Component } from "react";
 import styled from "styled-components";
 import upperFirst from "lodash/upperFirst";
-import Button from "./Button";
+import last from "lodash/last";
 import RPSEngine from "../RPSEngine";
+import Button from "./Button";
+import History from "./History";
 
 const ICONS = {
   rock: "hand-rock-o",
   paper: "hand-paper-o",
   scissors: "hand-scissors-o"
 };
+
 const RESULT_COLORS = {
   win: "green",
   lose: "red",
-  draw: "lightgrey"
+  draw: "#888"
 };
 
 const StyledAppContainer = styled.div`
@@ -43,9 +46,7 @@ const StyledAiIcon = styled.i`
 
 class App extends Component {
   state = {
-    result: null,
-    aiMove: null,
-    playerMove: null
+    history: []
   };
 
   componentDidMount() {
@@ -53,13 +54,22 @@ class App extends Component {
   }
 
   handleClick = move => {
-    this.setState(this.engine.play(move));
+    const results = this.engine.play(move);
+    this.setState(state => ({
+      history: state.history.concat([results])
+    }));
   };
 
   render() {
-    const { result, aiMove, playerMove } = this.state;
+    const { history } = this.state;
+    const lastResult = last(history);
+    const aiMove = lastResult && lastResult.aiMove;
+    const result = lastResult && lastResult.result;
+    const playerMove = lastResult && lastResult.playerMove;
+
     return (
       <StyledAppContainer>
+        <History history={history} />
         <StyledResult>
           {aiMove && <StyledAiIcon className={"fa fa-" + ICONS[aiMove]} />}
           <div style={{ color: RESULT_COLORS[result] }}>{result}</div>
