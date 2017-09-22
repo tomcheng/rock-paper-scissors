@@ -12,8 +12,8 @@ const StyledContainer = styled.div`
   text-align: center;
   cursor: pointer;
   user-select: none;
-  background-color: rgba(0,0,0,0.05);
-  -webkit-tap-highlight-color:  rgba(255, 255, 255, 0);
+  background-color: rgba(0, 0, 0, 0.1);
+  -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
   & + & {
     margin-left: 1px;
   }
@@ -30,10 +30,7 @@ const StyledLabel = styled.div`
 `;
 
 const Button = ({ label, icon, onClick, notSelected }) => (
-  <StyledContainer
-    onClick={onClick}
-    style={{ color: notSelected ? "rgba(0,0,0,0.15)" : "rgba(0,0,0,0.8)" }}
-  >
+  <StyledContainer onClick={onClick} style={{ opacity: notSelected ? 0.4 : 1 }}>
     <StyledIcon className={"fa fa-" + icon} />
     <StyledLabel>{label}</StyledLabel>
   </StyledContainer>
