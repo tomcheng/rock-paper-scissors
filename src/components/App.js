@@ -10,7 +10,13 @@ import History from "./History";
 const ICONS = {
   rock: "hand-rock-o",
   paper: "hand-paper-o",
-  scissors: "hand-scissors-o"
+  scissors: "hand-scissors-o fa-rotate-90"
+};
+
+const AI_ICONS = {
+  rock: "hand-rock-o fa-rotate-180",
+  paper: "hand-paper-o fa-rotate-180",
+  scissors: "hand-scissors-o fa-rotate-270"
 };
 
 const BACKGROUND_COLORS = {
@@ -118,7 +124,7 @@ class App extends Component {
         />
         {hasPlayed ? (
           <StyledBoard>
-            <StyledPlayedIcon className={"fa fa-" + ICONS[aiMove]} />
+            <StyledPlayedIcon className={"fa fa-" + AI_ICONS[aiMove]} />
             <StyledResult style={{ backgroundColor: RESULT_COLORS[result] }}>
               {MESSAGES[result]}
             </StyledResult>
