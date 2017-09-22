@@ -54,12 +54,13 @@ const outputToGuess = output => {
 };
 
 class RPSEngine {
-  constructor(params = { hiddenLayers: [], learningRate: 1 }) {
-    const { hiddenLayers, learningRate } = params;
+  constructor(params = { hiddenLayers: [], learningRate: 1, costFunction: "cross-entropy" }) {
+    const { hiddenLayers, learningRate, costFunction } = params;
     this.recentMoves = [];
     this.dnn = new deepNeuralNetwork({
       nodeCounts: [].concat([MEMORY * 15], hiddenLayers, [3]),
-      learningRate
+      learningRate,
+      costFunction
     });
     this.lastPlayTime = new Date().getTime();
   }

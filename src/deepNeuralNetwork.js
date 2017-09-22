@@ -11,9 +11,10 @@ const matrixMultiply = (m, c) =>
 const elementWiseMultiply = (c1, c2) => c1.map((v, i) => v * c2[i]);
 
 class deepNeuralNetwork {
-  constructor({ nodeCounts, learningRate }) {
+  constructor({ nodeCounts, learningRate, costFunction }) {
     this.learningRate = learningRate || 1;
     this.numInputNodes = nodeCounts[0];
+    this.costFunction = costFunction || "cross-entropy";
     this.numLayers = nodeCounts.length;
     this.weights = [null];
     this.biases = [null];
@@ -50,9 +51,14 @@ class deepNeuralNetwork {
 
     const output = last(this.as);
     const outputZ = last(this.zs);
-    this.errors[this.numLayers - 1] = output.map(
-      (g, i) => (g - result[i]) * sigmoidPrime(outputZ[i])
-    );
+
+    if (this.costFunction === "quadratic") {
+      this.errors[this.numLayers - 1] = output.map(
+        (g, i) => (g - result[i]) * sigmoidPrime(outputZ[i])
+      );
+    } else {
+      this.errors[this.numLayers - 1] = output.map((g, i) => g - result[i]);
+    }
 
     for (let l = this.numLayers - 2; l > 0; l--) {
       this.errors[l] = elementWiseMultiply(
@@ -67,7 +73,8 @@ class deepNeuralNetwork {
       );
       for (let j = 0; j < this.weights[l].length; j++) {
         this.weights[l][j] = this.weights[l][j].map(
-          (w, k) => w - this.learningRate * this.as[l - 1][k] * this.errors[l][j]
+          (w, k) =>
+            w - this.learningRate * this.as[l - 1][k] * this.errors[l][j]
         );
       }
     }

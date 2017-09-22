@@ -48,14 +48,13 @@ export const alternateStrategies = lastResult => {
     alwaysPaper,
     alternate,
     alwaysScissors,
-    otherWay,
     alwaysRock,
     rockAndPaper,
     paperAndScissors,
     scissorsAndRock,
     random
   ];
-  if (altStrategyCounter === 5) {
+  if (altStrategyCounter === 10) {
     altStrategyCounter = 0;
     strategy = sample(strategies);
   }
