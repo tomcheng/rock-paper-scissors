@@ -34,7 +34,7 @@ const StyledAppContainer = styled.div`
 const StyledButtons = styled.div`
   height: 100px;
   display: flex;
-  padding: 0 20px 20px;
+  padding: 15px;
 `;
 
 const StyledBoard = styled.div`
@@ -51,8 +51,6 @@ const StyledPlayedIcon = styled.i`
   font-size: 120px;
   margin-bottom: 16px;
 `;
-
-const StyledResult = styled.div``;
 
 class App extends Component {
   state = {
@@ -108,9 +106,9 @@ class App extends Component {
         {hasPlayed ? (
           <StyledBoard>
             <StyledPlayedIcon className={"fa fa-" + ICONS[aiMove]} />
-            <StyledResult style={{ color: RESULT_COLORS[result] }}>
+            <div style={{ color: RESULT_COLORS[result] }}>
               {MESSAGES[result]}
-            </StyledResult>
+            </div>
             <StyledPlayedIcon className={"fa fa-" + ICONS[playerMove]} />
           </StyledBoard>
         ) : (

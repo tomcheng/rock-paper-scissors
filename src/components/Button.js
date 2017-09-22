@@ -7,7 +7,6 @@ const StyledContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  margin: 0 10px;
   flex-grow: 1;
   flex-shrink: 0;
   flex-basis: 80px;
@@ -15,7 +14,11 @@ const StyledContainer = styled.div`
   cursor: pointer;
   user-select: none;
   background: #f2f2f2;
-  border: 2px solid ${props => props.active ? "#333" : "#ddd"};
+  border-width: 2px;
+  border-style: solid;
+  & + & {
+    margin-left: 10px;
+  }
 `;
 
 const StyledIcon = styled.i`
@@ -24,7 +27,7 @@ const StyledIcon = styled.i`
 `;
 
 const Button = ({ label, icon, onClick, active }) => (
-  <StyledContainer onClick={onClick} active={active}>
+  <StyledContainer onClick={onClick} style={{ borderColor: active ? "#333" : "#ddd" }}>
     <StyledIcon className={"fa fa-" + icon} />
     {label}
   </StyledContainer>
