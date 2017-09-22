@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import styled from "styled-components";
 import upperFirst from "lodash/upperFirst";
 import last from "lodash/last";
-import { getHistory, storeHistory } from "../storage";
+import { getHistory, storeHistory, storeModel, getModel } from "../storage";
 import RPSEngine from "../RPSEngine";
 import Button from "./Button";
 import History from "./History";
@@ -61,11 +61,16 @@ class App extends Component {
   };
 
   componentDidMount() {
-    this.engine = new RPSEngine();
+    this.engine = new RPSEngine({
+      hiddenLayers: [],
+      learningRate: 1,
+      costFunction: "cross-entropy",
+      model: getModel()
+    });
   }
 
   handleClick = move => {
-    const { aiMove, playerMove, result } = this.engine.play(move);
+    const { aiMove, playerMove, result, model } = this.engine.play(move);
     this.setState(
       state => ({
         history: state.history.concat({ aiMove, playerMove, result }),
@@ -73,6 +78,7 @@ class App extends Component {
       }),
       () => {
         storeHistory(this.state.history);
+        storeModel(model);
       }
     );
   };

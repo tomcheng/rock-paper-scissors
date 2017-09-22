@@ -11,18 +11,24 @@ const matrixMultiply = (m, c) =>
 const elementWiseMultiply = (c1, c2) => c1.map((v, i) => v * c2[i]);
 
 class deepNeuralNetwork {
-  constructor({ nodeCounts, learningRate, costFunction }) {
+  constructor({ nodeCounts, learningRate, costFunction, model }) {
     this.learningRate = learningRate || 1;
     this.numInputNodes = nodeCounts[0];
     this.costFunction = costFunction || "cross-entropy";
     this.numLayers = nodeCounts.length;
-    this.weights = [null];
-    this.biases = [null];
-    for (let i = 1; i < nodeCounts.length; i++) {
-      const rows = nodeCounts[i];
-      const cols = nodeCounts[i - 1];
-      this.weights[i] = times(rows, () => times(cols, () => random(-0.1, 0.1)));
-      this.biases[i] = times(rows, () => random(-0.1, 0.1));
+
+    if (model) {
+      this.weights = model.weights;
+      this.biases = model.biases;
+    } else {
+      this.weights = [null];
+      this.biases = [null];
+      for (let i = 1; i < nodeCounts.length; i++) {
+        const rows = nodeCounts[i];
+        const cols = nodeCounts[i - 1];
+        this.weights[i] = times(rows, () => times(cols, () => random(-0.1, 0.1)));
+        this.biases[i] = times(rows, () => random(-0.1, 0.1));
+      }
     }
   }
 
@@ -78,6 +84,8 @@ class deepNeuralNetwork {
         );
       }
     }
+
+    return { weights: this.weights, biases: this.biases };
   };
 }
 

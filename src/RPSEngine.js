@@ -54,13 +54,21 @@ const outputToGuess = output => {
 };
 
 class RPSEngine {
-  constructor(params = { hiddenLayers: [], learningRate: 1, costFunction: "cross-entropy" }) {
-    const { hiddenLayers, learningRate, costFunction } = params;
+  constructor(
+    params = {
+      hiddenLayers: [],
+      learningRate: 1,
+      costFunction: "cross-entropy",
+      model: null
+    }
+  ) {
+    const { hiddenLayers, learningRate, costFunction, model } = params;
     this.recentMoves = [];
     this.dnn = new deepNeuralNetwork({
       nodeCounts: [].concat([MEMORY * 15], hiddenLayers, [3]),
       learningRate,
-      costFunction
+      costFunction,
+      model
     });
     this.lastPlayTime = new Date().getTime();
   }
@@ -79,7 +87,7 @@ class RPSEngine {
     const aiMove = outputToGuess(this.dnn.guess(inputs));
     const result = getResult(playerMove, aiMove);
 
-    this.dnn.update(moveToInputs[playerMove]);
+    const { weights, biases } = this.dnn.update(moveToInputs[playerMove]);
 
     this.recentMoves = [
       { playerMove, aiMove, result, time: playTime - this.lastPlayTime }
@@ -91,7 +99,7 @@ class RPSEngine {
 
     this.lastPlayTime = playTime;
 
-    return { playerMove, aiMove, result };
+    return { playerMove, aiMove, result, model: { weights, biases } };
   };
 }
 
