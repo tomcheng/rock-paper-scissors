@@ -118,10 +118,6 @@ class App extends Component {
 
     return (
       <StyledAppContainer style={{ backgroundColor: BACKGROUND_COLORS[result] }}>
-        <History
-          history={history.map(({ result }) => result)}
-          onClick={this.handleClickHistory}
-        />
         {hasPlayed ? (
           <StyledBoard>
             <StyledPlayedIcon className={"fa fa-" + AI_ICONS[aiMove]} />
@@ -133,6 +129,10 @@ class App extends Component {
         ) : (
           <StyledBoard />
         )}
+        <History
+          history={history.map(({ result }) => result)}
+          onClick={this.handleClickHistory}
+        />
         <StyledButtons>
           {["rock", "paper", "scissors"].map(move => (
             <Button
