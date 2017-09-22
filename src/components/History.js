@@ -9,9 +9,9 @@ const StyledContainer = styled.div`
 `;
 
 const History = ({ history }) => {
-  const wins = history.filter(({ result }) => result === "win").length;
-  const losses = history.filter(({ result }) => result === "lose").length;
-  const draws = history.filter(({ result }) => result === "draw").length;
+  const wins = history.filter(result => result === "win").length;
+  const losses = history.filter(result => result === "lose").length;
+  const draws = history.filter(result => result === "draw").length;
   return (
     <StyledContainer>
       {wins} win{wins === 1 ? "" : "s"}&ensp;{losses} loss{losses === 1 ? "" : "es"}&ensp;{draws}{" "}
@@ -22,9 +22,7 @@ const History = ({ history }) => {
 
 History.propTypes = {
   history: PropTypes.arrayOf(
-    PropTypes.shape({
-      result: PropTypes.oneOf(["win", "lose", "draw"]).isRequired
-    })
+    PropTypes.oneOf(["win", "lose", "draw"]).isRequired
   ).isRequired
 };
 

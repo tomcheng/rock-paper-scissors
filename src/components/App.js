@@ -63,9 +63,9 @@ class App extends Component {
   }
 
   handleClick = move => {
-    const results = this.engine.play(move);
+    const { aiMove, playerMove, result } = this.engine.play(move);
     this.setState(state => ({
-      history: state.history.concat([results])
+      history: state.history.concat({ aiMove, playerMove, result })
     }));
   };
 
@@ -78,7 +78,7 @@ class App extends Component {
 
     return (
       <StyledAppContainer>
-        <History history={history} />
+        <History history={history.map(({ result }) => result)} />
         <StyledBoard>
           {aiMove && <StyledPlayedIcon className={"fa fa-" + ICONS[aiMove]} />}
           {result && (
