@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import styled from "styled-components";
 import upperFirst from "lodash/upperFirst";
 import last from "lodash/last";
+import { getHistory, storeHistory } from "../storage";
 import RPSEngine from "../RPSEngine";
 import Button from "./Button";
 import History from "./History";
@@ -55,7 +56,8 @@ const StyledResult = styled.div``;
 
 class App extends Component {
   state = {
-    history: []
+    history: getHistory(),
+    hasPlayed: false
   };
 
   componentDidMount() {
@@ -64,32 +66,36 @@ class App extends Component {
 
   handleClick = move => {
     const { aiMove, playerMove, result } = this.engine.play(move);
-    this.setState(state => ({
-      history: state.history.concat({ aiMove, playerMove, result })
-    }));
+    this.setState(
+      state => ({
+        history: state.history.concat({ aiMove, playerMove, result }),
+        hasPlayed: true
+      }),
+      () => {
+        storeHistory(this.state.history);
+      }
+    );
   };
 
   render() {
-    const { history } = this.state;
-    const lastResult = last(history);
-    const aiMove = lastResult && lastResult.aiMove;
-    const result = lastResult && lastResult.result;
-    const playerMove = lastResult && lastResult.playerMove;
+    const { history, hasPlayed } = this.state;
+    const lastResult = last(history) || {};
+    const { aiMove, result, playerMove } = lastResult;
 
     return (
       <StyledAppContainer>
         <History history={history.map(({ result }) => result)} />
-        <StyledBoard>
-          {aiMove && <StyledPlayedIcon className={"fa fa-" + ICONS[aiMove]} />}
-          {result && (
+        {hasPlayed ? (
+          <StyledBoard>
+            <StyledPlayedIcon className={"fa fa-" + ICONS[aiMove]} />
             <StyledResult style={{ color: RESULT_COLORS[result] }}>
               {MESSAGES[result]}
             </StyledResult>
-          )}
-          {playerMove && (
             <StyledPlayedIcon className={"fa fa-" + ICONS[playerMove]} />
-          )}
-        </StyledBoard>
+          </StyledBoard>
+        ) : (
+          <StyledBoard />
+        )}
         <StyledButtons>
           {["rock", "paper", "scissors"].map(move => (
             <Button
