@@ -83,6 +83,17 @@ class App extends Component {
     );
   };
 
+  handleClickHistory = () => {
+    this.setState(
+      state => ({
+        history: []
+      }),
+      () => {
+        storeHistory(this.state.history);
+      }
+    );
+  };
+
   render() {
     const { history, hasPlayed } = this.state;
     const lastResult = last(history) || {};
@@ -90,7 +101,10 @@ class App extends Component {
 
     return (
       <StyledAppContainer>
-        <History history={history.map(({ result }) => result)} />
+        <History
+          history={history.map(({ result }) => result)}
+          onClick={this.handleClickHistory}
+        />
         {hasPlayed ? (
           <StyledBoard>
             <StyledPlayedIcon className={"fa fa-" + ICONS[aiMove]} />
