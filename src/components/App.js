@@ -18,6 +18,12 @@ const RESULT_COLORS = {
   draw: "#888"
 };
 
+const MESSAGES = {
+  win: "You Win",
+  lose: "You Lose",
+  draw: "Tie"
+};
+
 const StyledAppContainer = styled.div`
   height: 100%;
   display: flex;
@@ -30,19 +36,22 @@ const StyledButtons = styled.div`
   padding: 0 20px 20px;
 `;
 
-const StyledResult = styled.div`
+const StyledBoard = styled.div`
   flex-grow: 1;
   flex-basis: 200px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: space-around;
+  padding: 40px 0;
 `;
 
-const StyledAiIcon = styled.i`
+const StyledPlayedIcon = styled.i`
   font-size: 120px;
   margin-bottom: 16px;
 `;
+
+const StyledResult = styled.div``;
 
 class App extends Component {
   state = {
@@ -70,10 +79,17 @@ class App extends Component {
     return (
       <StyledAppContainer>
         <History history={history} />
-        <StyledResult>
-          {aiMove && <StyledAiIcon className={"fa fa-" + ICONS[aiMove]} />}
-          <div style={{ color: RESULT_COLORS[result] }}>{result}</div>
-        </StyledResult>
+        <StyledBoard>
+          {aiMove && <StyledPlayedIcon className={"fa fa-" + ICONS[aiMove]} />}
+          {result && (
+            <StyledResult style={{ color: RESULT_COLORS[result] }}>
+              {MESSAGES[result]}
+            </StyledResult>
+          )}
+          {playerMove && (
+            <StyledPlayedIcon className={"fa fa-" + ICONS[playerMove]} />
+          )}
+        </StyledBoard>
         <StyledButtons>
           {["rock", "paper", "scissors"].map(move => (
             <Button
