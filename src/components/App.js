@@ -13,16 +13,22 @@ const ICONS = {
   scissors: "hand-scissors-o"
 };
 
+const BACKGROUND_COLORS = {
+  win: "rgba(78, 150, 112, 0.2)",
+  lose: "rgba(217, 94, 87, 0.2)",
+  draw: "rgba(136, 136, 136, 0.2)"
+};
+
 const RESULT_COLORS = {
-  win: "green",
-  lose: "red",
-  draw: "#888"
+  win: "rgba(78, 150, 112, 1)",
+  lose: "rgba(217, 94, 87, 1)",
+  draw: "rgba(136, 136, 136, 1)"
 };
 
 const MESSAGES = {
   win: "You Win",
   lose: "You Lose",
-  draw: "Tie"
+  draw: "Draw"
 };
 
 const StyledAppContainer = styled.div`
@@ -34,7 +40,6 @@ const StyledAppContainer = styled.div`
 const StyledButtons = styled.div`
   height: 100px;
   display: flex;
-  padding: 15px;
 `;
 
 const StyledBoard = styled.div`
@@ -44,7 +49,13 @@ const StyledBoard = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: space-around;
-  padding: 40px 0;
+  padding: 20px 0;
+`;
+
+const StyledResult = styled.div`
+  color: #fff;
+  padding: 5px 7px 4px;
+  border-radius: 2px;
 `;
 
 const StyledPlayedIcon = styled.i`
@@ -84,7 +95,8 @@ class App extends Component {
   handleClickHistory = () => {
     this.setState(
       state => ({
-        history: []
+        history: [],
+        hasPlayed: false
       }),
       () => {
         storeHistory(this.state.history);
@@ -95,10 +107,11 @@ class App extends Component {
   render() {
     const { history, hasPlayed } = this.state;
     const lastResult = last(history) || {};
-    const { aiMove, result, playerMove } = lastResult;
+    const { aiMove, playerMove } = lastResult;
+    const result = hasPlayed && lastResult ? lastResult.result : "draw";
 
     return (
-      <StyledAppContainer>
+      <StyledAppContainer style={{ backgroundColor: BACKGROUND_COLORS[result] }}>
         <History
           history={history.map(({ result }) => result)}
           onClick={this.handleClickHistory}
@@ -106,9 +119,9 @@ class App extends Component {
         {hasPlayed ? (
           <StyledBoard>
             <StyledPlayedIcon className={"fa fa-" + ICONS[aiMove]} />
-            <div style={{ color: RESULT_COLORS[result] }}>
+            <StyledResult style={{ backgroundColor: RESULT_COLORS[result] }}>
               {MESSAGES[result]}
-            </div>
+            </StyledResult>
             <StyledPlayedIcon className={"fa fa-" + ICONS[playerMove]} />
           </StyledBoard>
         ) : (
@@ -121,7 +134,7 @@ class App extends Component {
               icon={ICONS[move]}
               label={upperFirst(move)}
               onClick={() => this.handleClick(move)}
-              active={playerMove === move}
+              notSelected={!!playerMove && playerMove !== move}
             />
           ))}
         </StyledButtons>

@@ -3,9 +3,10 @@ import React from "react";
 import styled from "styled-components";
 
 const StyledContainer = styled.div`
-  padding-top: 10px;
+  padding: 10px 0 8px;
   text-align: center;
-  color: #888;
+  color: rgba(255,255,255,0.8);
+  background-color: rgba(0,0,0,0.8);
 `;
 
 const History = ({ history, onClick }) => {

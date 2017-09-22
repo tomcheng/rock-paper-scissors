@@ -3,7 +3,6 @@ import React from "react";
 import styled from "styled-components";
 
 const StyledContainer = styled.div`
-  border-radius: 4px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -13,11 +12,10 @@ const StyledContainer = styled.div`
   text-align: center;
   cursor: pointer;
   user-select: none;
-  background: #f2f2f2;
-  border-width: 2px;
-  border-style: solid;
+  background-color: rgba(0,0,0,0.05);
+  -webkit-tap-highlight-color:  rgba(255, 255, 255, 0);
   & + & {
-    margin-left: 10px;
+    margin-left: 1px;
   }
 `;
 
@@ -26,15 +24,23 @@ const StyledIcon = styled.i`
   margin-bottom: 8px;
 `;
 
-const Button = ({ label, icon, onClick, active }) => (
-  <StyledContainer onClick={onClick} style={{ borderColor: active ? "#333" : "#ddd" }}>
+const StyledLabel = styled.div`
+  opacity: 0.8;
+  font-size: 13px;
+`;
+
+const Button = ({ label, icon, onClick, notSelected }) => (
+  <StyledContainer
+    onClick={onClick}
+    style={{ color: notSelected ? "rgba(0,0,0,0.15)" : "rgba(0,0,0,0.8)" }}
+  >
     <StyledIcon className={"fa fa-" + icon} />
-    {label}
+    <StyledLabel>{label}</StyledLabel>
   </StyledContainer>
 );
 
 Button.propTypes = {
-  active: PropTypes.bool.isRequired,
+  notSelected: PropTypes.bool.isRequired,
   icon: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
   onClick: PropTypes.func.isRequired
