@@ -6,18 +6,7 @@ import RPSEngine from "../RPSEngine";
 import Button from "./Button";
 import Icon from "./Icon";
 import History from "./History";
-
-const BACKGROUND_COLORS = {
-  win: "rgba(78, 150, 112, 0.2)",
-  lose: "rgba(217, 94, 87, 0.2)",
-  draw: "rgba(136, 136, 136, 0.2)"
-};
-
-const RESULT_COLORS = {
-  win: "rgba(78, 150, 112, 1)",
-  lose: "rgba(217, 94, 87, 1)",
-  draw: "rgba(136, 136, 136, 1)"
-};
+import Colors from "./Colors";
 
 const MESSAGES = {
   win: "You Win",
@@ -105,33 +94,39 @@ class App extends Component {
     const result = hasPlayed && lastResult ? lastResult.result : "draw";
 
     return (
-      <StyledAppContainer style={{ backgroundColor: BACKGROUND_COLORS[result] }}>
-        {hasPlayed ? (
-          <StyledBoard>
-            <StyledPlayedIcon move={aiMove} flip />
-            <StyledResult style={{ backgroundColor: RESULT_COLORS[result] }}>
-              {MESSAGES[result]}
-            </StyledResult>
-            <StyledPlayedIcon move={playerMove} />
-          </StyledBoard>
-        ) : (
-          <StyledBoard />
-        )}
-        <History
-          history={history.map(({ result }) => result)}
-          onClick={this.handleClickHistory}
-        />
-        <StyledButtons>
-          {["rock", "paper", "scissors"].map(move => (
-            <Button
-              key={move}
-              move={move}
-              onClick={() => this.handleClick(move)}
-              notSelected={!!playerMove && playerMove !== move}
+      <Colors result={result}>
+        {({ backgroundColor, color }) => (
+          <StyledAppContainer style={{ backgroundColor }}>
+            {hasPlayed ? (
+              <StyledBoard>
+                <StyledPlayedIcon move={aiMove} flip />
+                <StyledResult
+                  style={{ backgroundColor: color }}
+                >
+                  {MESSAGES[result]}
+                </StyledResult>
+                <StyledPlayedIcon move={playerMove} />
+              </StyledBoard>
+            ) : (
+              <StyledBoard />
+            )}
+            <History
+              history={history.map(({ result }) => result)}
+              onClick={this.handleClickHistory}
             />
-          ))}
-        </StyledButtons>
-      </StyledAppContainer>
+            <StyledButtons>
+              {["rock", "paper", "scissors"].map(move => (
+                <Button
+                  key={move}
+                  move={move}
+                  onClick={() => this.handleClick(move)}
+                  notSelected={!!playerMove && playerMove !== move}
+                />
+              ))}
+            </StyledButtons>
+          </StyledAppContainer>
+        )}
+      </Colors>
     );
   }
 }
