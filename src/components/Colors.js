@@ -5,7 +5,7 @@ import Animations from "../animation";
 const COLORS = {
   win: { r: 78, g: 150, b: 112 },
   lose: { r: 217, g: 94, b: 87 },
-  draw: { r: 136, g: 136, b: 136 }
+  draw: { r: 136, g: 136, b: 144 }
 };
 
 class Colors extends Component {
@@ -31,7 +31,7 @@ class Colors extends Component {
       name: "color",
       start: 0,
       end: 1,
-      duration: 200,
+      duration: 400,
       delay: 500,
       onUpdate: x => {
         this.setState({
