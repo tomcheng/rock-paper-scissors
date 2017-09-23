@@ -1,6 +1,8 @@
 {
   "name": "rock-paper-scissors",
   "version": "0.1.0",
+  "description": "A Rock, Paper, Scissors AI",
+  "homepage": "https://roshamboai.com",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
