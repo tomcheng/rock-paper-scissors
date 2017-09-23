@@ -31,7 +31,8 @@ class Colors extends Component {
       name: "color",
       start: 0,
       end: 1,
-      duration: 300,
+      duration: 200,
+      delay: 500,
       onUpdate: x => {
         this.setState({
           r: Math.round(ri + (rf - ri) * x),
@@ -46,10 +47,11 @@ class Colors extends Component {
   }
 
   render() {
-    const { children } = this.props;
+    const { children, result } = this.props;
     const { r, g, b } = this.state;
+    const { r: rf, g: gf, b: bf } = COLORS[result];
     const backgroundColor = `rgba(${r},${g},${b},0.2)`;
-    const color = `rgba(${r},${g},${b},1)`;
+    const color = `rgba(${rf},${gf},${bf},1)`;
 
     return children({ backgroundColor, color });
   }

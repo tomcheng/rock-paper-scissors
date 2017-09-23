@@ -71,6 +71,7 @@ class App extends Component {
         {({ backgroundColor, color }) => (
           <StyledAppContainer style={{ backgroundColor }}>
             <ResultsArea
+              resultIndex={history.length}
               showResults={hasPlayed}
               aiMove={aiMove}
               result={result}

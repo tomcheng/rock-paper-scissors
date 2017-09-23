@@ -1,3 +1,5 @@
+export const cubicOut = x => --x * x * x + 1;
+
 export const cubicInOut = x => {
   // eslint-disable-next-line no-cond-assign
   if ((x *= 2) < 1) {
@@ -41,11 +43,13 @@ const Animations = {
     start,
     end,
     duration,
+    delay: delayIn,
     easing: customEasing,
     onUpdate,
     onComplete
   }) {
     const easing = customEasing || cubicInOut;
+    const delay = delayIn || 0;
     const { animations } = this.props;
     const startTime = this.getCurrentTime();
     let timePassed;
@@ -56,7 +60,7 @@ const Animations = {
       if (animations[name]) {
         timePassed = this.getCurrentTime() - startTime;
 
-        if (timePassed >= duration) {
+        if (timePassed >= duration + delay) {
           this.stop(name);
           onUpdate(end);
           if (onComplete) {
@@ -65,7 +69,11 @@ const Animations = {
           return;
         }
 
-        onUpdate((end - start) * easing(timePassed / duration) + start);
+        onUpdate(
+          timePassed < delay
+            ? start
+            : (end - start) * easing((timePassed - delay) / duration) + start
+        );
 
         animations[name].raf = window.requestAnimationFrame(animationLoop);
       }
