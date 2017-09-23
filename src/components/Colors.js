@@ -1,5 +1,6 @@
 import PropTypes from "prop-types";
 import { Component } from "react";
+import Animations from "../animation";
 
 const COLORS = {
   win: { r: 78, g: 150, b: 112 },
@@ -17,11 +18,38 @@ class Colors extends Component {
     result: "draw"
   };
 
+  constructor(props) {
+    super();
+    this.state = COLORS[props.result];
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { r: ri, g: gi, b: bi } = this.state;
+    const { r: rf, g: gf, b: bf } = COLORS[nextProps.result];
+
+    Animations.animate({
+      name: "color",
+      start: 0,
+      end: 1,
+      duration: 300,
+      onUpdate: x => {
+        this.setState({
+          r: Math.round(ri + (rf - ri) * x),
+          g: Math.round(gi + (gf - gi) * x),
+          b: Math.round(bi + (bf - bi) * x)
+        });
+      },
+      onComplete: () => {
+        this.setState({ r: rf, g: gf, b: bf });
+      }
+    });
+  }
+
   render() {
-    const { children, result } = this.props;
-    const c = COLORS[result];
-    const backgroundColor = `rgba(${c.r},${c.g},${c.b},0.2)`;
-    const color = `rgba(${c.r},${c.g},${c.b},1)`;
+    const { children } = this.props;
+    const { r, g, b } = this.state;
+    const backgroundColor = `rgba(${r},${g},${b},0.2)`;
+    const color = `rgba(${r},${g},${b},1)`;
 
     return children({ backgroundColor, color });
   }
