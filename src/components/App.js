@@ -1,23 +1,11 @@
 import React, { Component } from "react";
 import styled from "styled-components";
-import upperFirst from "lodash/upperFirst";
 import last from "lodash/last";
 import { getHistory, storeHistory, storeModel, getModel } from "../storage";
 import RPSEngine from "../RPSEngine";
 import Button from "./Button";
+import Icon from "./Icon";
 import History from "./History";
-
-const ICONS = {
-  rock: "hand-rock-o",
-  paper: "hand-paper-o",
-  scissors: "hand-scissors-o fa-rotate-90"
-};
-
-const AI_ICONS = {
-  rock: "hand-rock-o fa-rotate-180",
-  paper: "hand-paper-o fa-rotate-180",
-  scissors: "hand-scissors-o fa-rotate-270"
-};
 
 const BACKGROUND_COLORS = {
   win: "rgba(78, 150, 112, 0.2)",
@@ -64,7 +52,7 @@ const StyledResult = styled.div`
   border-radius: 2px;
 `;
 
-const StyledPlayedIcon = styled.i`
+const StyledPlayedIcon = styled(Icon)`
   font-size: 120px;
   margin-bottom: 16px;
 `;
@@ -120,11 +108,11 @@ class App extends Component {
       <StyledAppContainer style={{ backgroundColor: BACKGROUND_COLORS[result] }}>
         {hasPlayed ? (
           <StyledBoard>
-            <StyledPlayedIcon className={"fa fa-" + AI_ICONS[aiMove]} />
+            <StyledPlayedIcon move={aiMove} flip />
             <StyledResult style={{ backgroundColor: RESULT_COLORS[result] }}>
               {MESSAGES[result]}
             </StyledResult>
-            <StyledPlayedIcon className={"fa fa-" + ICONS[playerMove]} />
+            <StyledPlayedIcon move={playerMove} />
           </StyledBoard>
         ) : (
           <StyledBoard />
@@ -137,8 +125,7 @@ class App extends Component {
           {["rock", "paper", "scissors"].map(move => (
             <Button
               key={move}
-              icon={ICONS[move]}
-              label={upperFirst(move)}
+              move={move}
               onClick={() => this.handleClick(move)}
               notSelected={!!playerMove && playerMove !== move}
             />

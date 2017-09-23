@@ -1,6 +1,8 @@
 import PropTypes from "prop-types";
 import React from "react";
 import styled from "styled-components";
+import upperFirst from "lodash/upperFirst";
+import Icon from "./Icon";
 
 const StyledContainer = styled.div`
   display: flex;
@@ -19,7 +21,7 @@ const StyledContainer = styled.div`
   }
 `;
 
-const StyledIcon = styled.i`
+const StyledIcon = styled(Icon)`
   font-size: 40px;
   margin-bottom: 8px;
 `;
@@ -29,17 +31,16 @@ const StyledLabel = styled.div`
   font-size: 13px;
 `;
 
-const Button = ({ label, icon, onClick, notSelected }) => (
+const Button = ({ move, onClick, notSelected }) => (
   <StyledContainer onClick={onClick} style={{ opacity: notSelected ? 0.4 : 1 }}>
-    <StyledIcon className={"fa fa-" + icon} />
-    <StyledLabel>{label}</StyledLabel>
+    <StyledIcon move={move} />
+    <StyledLabel>{upperFirst(move)}</StyledLabel>
   </StyledContainer>
 );
 
 Button.propTypes = {
+  move: PropTypes.string.isRequired,
   notSelected: PropTypes.bool.isRequired,
-  icon: PropTypes.string.isRequired,
-  label: PropTypes.string.isRequired,
   onClick: PropTypes.func.isRequired
 };
 
