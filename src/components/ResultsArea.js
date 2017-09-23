@@ -84,7 +84,9 @@ class ResultsArea extends Component {
         </div>
       </StyledBoard>
     ) : (
-      <StyledBoard />
+      <StyledBoard>
+        Choose Rock, Paper or Scissors
+      </StyledBoard>
     );
   }
 }
