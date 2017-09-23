@@ -1,0 +1,15 @@
+{
+  "short_name": "Rock Paper Scissors",
+  "name": "Rock Paper Scissors",
+  "icons": [
+    {
+      "src": "rps-icon_192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ],
+  "start_url": "./index.html",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#e7e7e7"
+}
