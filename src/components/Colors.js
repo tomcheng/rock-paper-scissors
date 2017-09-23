@@ -1,16 +1,10 @@
 import PropTypes from "prop-types";
-import React, { Component } from "react";
+import { Component } from "react";
 
-const BACKGROUND_COLORS = {
-  win: "rgba(78, 150, 112, 0.2)",
-  lose: "rgba(217, 94, 87, 0.2)",
-  draw: "rgba(136, 136, 136, 0.2)"
-};
-
-const RESULT_COLORS = {
-  win: "rgba(78, 150, 112, 1)",
-  lose: "rgba(217, 94, 87, 1)",
-  draw: "rgba(136, 136, 136, 1)"
+const COLORS = {
+  win: { r: 78, g: 150, b: 112 },
+  lose: { r: 217, g: 94, b: 87 },
+  draw: { r: 136, g: 136, b: 136 }
 };
 
 class Colors extends Component {
@@ -23,13 +17,14 @@ class Colors extends Component {
     result: "draw"
   };
 
-  render () {
+  render() {
     const { children, result } = this.props;
-    const backgroundColor = BACKGROUND_COLORS[result];
-    const color = RESULT_COLORS[result];
+    const c = COLORS[result];
+    const backgroundColor = `rgba(${c.r},${c.g},${c.b},0.2)`;
+    const color = `rgba(${c.r},${c.g},${c.b},1)`;
 
     return children({ backgroundColor, color });
-  };
+  }
 }
 
 export default Colors;
