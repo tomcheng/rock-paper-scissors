@@ -3,16 +3,10 @@ import styled from "styled-components";
 import last from "lodash/last";
 import { getHistory, storeHistory, storeModel, getModel } from "../storage";
 import RPSEngine from "../RPSEngine";
-import Button from "./Button";
-import Icon from "./Icon";
+import ResultsArea from "./ResultsArea";
 import History from "./History";
+import Button from "./Button";
 import Colors from "./Colors";
-
-const MESSAGES = {
-  win: "You Win",
-  lose: "You Lose",
-  draw: "Draw"
-};
 
 const StyledAppContainer = styled.div`
   height: 100%;
@@ -23,27 +17,6 @@ const StyledAppContainer = styled.div`
 const StyledButtons = styled.div`
   height: 100px;
   display: flex;
-`;
-
-const StyledBoard = styled.div`
-  flex-grow: 1;
-  flex-basis: 200px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-around;
-  padding: 20px 0;
-`;
-
-const StyledResult = styled.div`
-  color: #fff;
-  padding: 5px 7px 4px;
-  border-radius: 2px;
-`;
-
-const StyledPlayedIcon = styled(Icon)`
-  font-size: 120px;
-  margin-bottom: 16px;
 `;
 
 class App extends Component {
@@ -97,19 +70,13 @@ class App extends Component {
       <Colors result={result}>
         {({ backgroundColor, color }) => (
           <StyledAppContainer style={{ backgroundColor }}>
-            {hasPlayed ? (
-              <StyledBoard>
-                <StyledPlayedIcon move={aiMove} flip />
-                <StyledResult
-                  style={{ backgroundColor: color }}
-                >
-                  {MESSAGES[result]}
-                </StyledResult>
-                <StyledPlayedIcon move={playerMove} />
-              </StyledBoard>
-            ) : (
-              <StyledBoard />
-            )}
+            <ResultsArea
+              showResults={hasPlayed}
+              aiMove={aiMove}
+              result={result}
+              playerMove={playerMove}
+              resultColor={color}
+            />
             <History
               history={history.map(({ result }) => result)}
               onClick={this.handleClickHistory}
